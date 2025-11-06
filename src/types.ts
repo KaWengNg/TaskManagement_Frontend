@@ -15,5 +15,5 @@ export type CreateTask = {
 export type UpdateTask = {
   title: string;
   description?: string;
-  completed: boolean;
+  completed?: boolean;
 };

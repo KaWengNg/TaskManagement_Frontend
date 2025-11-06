@@ -7,14 +7,13 @@ import TaskTable from "./components/TaskTable";
 const API_BASE = `${import.meta.env.VITE_API_BASE_URL}/api/tasks`;
 
 export default function App() {
- const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [creating, setCreating] = useState(false);
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
+  // Fetch tasks
   const fetchTasks = async () => {
     try {
       setLoading(true);
@@ -37,44 +36,45 @@ export default function App() {
     fetchTasks();
   }, [filter]);
 
+  // Create
   const handleCreate = async (payload: CreateTask) => {
     try {
-      setCreating(true);
       await axios.post(API_BASE, payload);
       await fetchTasks();
       (document.getElementById("createTaskModal") as HTMLDialogElement)?.close();
     } catch {
       alert("Failed to create task.");
-    } finally {
-      setCreating(false);
-    }
+    } 
   };
 
+  // Update
   const handleUpdate = async (id: string, payload: UpdateTask) => {
     try {
-      setUpdatingId(id);
       await axios.put(`${API_BASE}/${id}`, payload);
       await fetchTasks();
+      (document.getElementById("editTaskModal") as HTMLDialogElement)?.close();
+      setEditingTask(null);
     } catch {
       alert("Failed to update task.");
-    } finally {
-      setUpdatingId(null);
-    }
+    } 
   };
 
+  // Delete
   const handleDelete = async (id: string) => {
     try {
-      setDeletingId(id);
       await axios.delete(`${API_BASE}/${id}`);
       await fetchTasks();
     } catch {
       alert("Failed to delete task.");
-    } finally {
-      setDeletingId(null);
-    }
+    } 
   };
 
- return (
+  const handleEditClick = (task: Task) => {
+    setEditingTask(task);
+    (document.getElementById("editTaskModal") as HTMLDialogElement)?.showModal(); 
+  };
+
+  return (
     <div className="max-w-5xl mx-auto p-6 flex flex-col gap-8">
       {/* --- Header --- */}
       <header className="text-center">
@@ -124,30 +124,31 @@ export default function App() {
         ) : (
           <TaskTable
             tasks={tasks}
-            onUpdate={handleUpdate}
             onDelete={handleDelete}
-            updatingId={updatingId}
-            deletingId={deletingId}
+            onEdit={handleEditClick} 
           />
         )}
       </div>
 
       {/* --- Create Task Modal --- */}
       <dialog id="createTaskModal" className="modal">
-        <div className="modal-box bg-white rounded-xl shadow-lg p-6 space-y-4 max-w-lg">
+        <div className="modal-box">
           <h3 className="text-lg font-semibold text-gray-800 mb-3">Create New Task</h3>
-          <TaskForm onSubmit={handleCreate} loading={creating} />
+          <TaskForm onSubmit={handleCreate}/>
+        </div>
+      </dialog>
 
-          <div className="mt-4 text-right">
-            <button
-              onClick={() =>
-                (document.getElementById("createTaskModal") as HTMLDialogElement)?.close()
-              }
-              className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg"
-            >
-              Close
-            </button>
-          </div>
+      {/* --- Edit Task Modal --- */}
+      <dialog id="editTaskModal" className="modal">
+        <div className="modal-box">
+          <h3 className="text-lg font-semibold text-gray-800 mb-3">Edit Task</h3>
+          {editingTask && (
+            <TaskForm
+              onSubmit={(payload) => handleUpdate(editingTask.id, payload)}
+              mode="edit"
+              initialTask={editingTask}
+            />
+          )}
         </div>
       </dialog>
     </div>
