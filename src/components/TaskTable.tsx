@@ -26,21 +26,25 @@ export default function TaskTable({
       <table className="min-w-full border border-gray-300 border-collapse rounded-lg text-sm">
         <thead className="bg-gradient-to-r from-blue-50 to-blue-100 text-gray-700 text-xs tracking-wider border-b border-gray-300">
           <tr>
+            <th className="px-4 py-3 text-center font-semibold w-12">#</th>
             <th className="px-4 py-3 text-left font-semibold">Title</th>
             <th className="px-4 py-3 text-left font-semibold">Description</th>
             <th className="px-4 py-3 text-center font-semibold">Status</th>
-            <th className="px-4 py-3 text-center font-semibold w-40">Created At</th>
-            <th className="px-4 py-3 text-center font-semibold w-40">Updated At</th>
+            <th className="px-4 py-3 text-center font-semibold w-12">Created At</th>
+            <th className="px-4 py-3 text-center font-semibold w-12">Updated At</th>
             <th className="px-4 py-3 text-center font-semibold">Actions</th>
           </tr>
         </thead>
 
         <tbody>
-          {tasks.map((t) => (
+          {tasks.map((t, i) => (
             <tr
               key={t.id}
               className="border-b border-gray-200 hover:bg-blue-50 transition-colors duration-150"
             >
+              <td className="px-4 py-3 text-center text-gray-700 font-medium">
+                {i + 1}
+              </td>
               <td className="px-4 py-3 font-medium">{t.title}</td>
               <td className="px-4 py-3 text-gray-600">{t.description || "—"}</td>
 
@@ -65,10 +69,10 @@ export default function TaskTable({
               </td>
 
               <td className="px-4 py-3 text-center text-gray-500 text-xs w-40">
-                {format(new Date(t.createdAt), "dd MMM yyyy, hh:mm a")}
+                {format(new Date(t.createdAt), "dd/MM/yyyy, hh:mm a")}
               </td>
               <td className="px-4 py-3 text-center text-gray-500 text-xs w-40">
-                {format(new Date(t.updatedAt), "dd MMM yyyy, hh:mm a")}
+                {format(new Date(t.updatedAt), "dd/MM/yyyy, hh:mm a")}
               </td>
 
               <td className="px-4 py-3 text-center">
