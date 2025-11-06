@@ -4,14 +4,12 @@ import type { CreateTask, Task } from "../types";
 
 type Props = {
   onSubmit: (payload: CreateTask & { completed?: boolean }) => void;
-  loading?: boolean;
   mode?: "create" | "edit";
   initialTask?: Task | null;
 };
 
 export default function TaskForm({
   onSubmit,
-  loading,
   mode = "create",
   initialTask = null,
 }: Props) {
@@ -116,18 +114,13 @@ export default function TaskForm({
       <div className="flex justify-center gap-6 mt-8">
         <button
           type="submit"
-          disabled={loading}
           className={`${
             mode === "edit"
               ? "bg-blue-600 hover:bg-blue-700"
               : "bg-orange-500 hover:bg-orange-600"
           } text-white font-medium rounded-lg py-2 px-8 transition disabled:opacity-60`}
         >
-          {loading
-            ? mode === "edit"
-              ? "Updating..."
-              : "Adding..."
-            : mode === "edit"
+          {mode === "edit"
             ? "Update Task"
             : "Add Task"}
         </button>
