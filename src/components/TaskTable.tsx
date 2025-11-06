@@ -1,6 +1,6 @@
 import type { Task } from "../types";
-import { format } from "date-fns";
 import { CheckCircle, Edit2, Trash2, XCircle } from "lucide-react";
+import { toLocalTime } from "../utils/TimezoneConversion";
 
 type Props = {
   tasks: Task[];
@@ -69,10 +69,10 @@ export default function TaskTable({
               </td>
 
               <td className="px-4 py-3 text-center text-gray-500 text-xs w-40">
-                {format(new Date(t.createdAt), "dd/MM/yyyy, hh:mm a")}
+                {toLocalTime(t.createdAt)}
               </td>
               <td className="px-4 py-3 text-center text-gray-500 text-xs w-40">
-                {format(new Date(t.updatedAt), "dd/MM/yyyy, hh:mm a")}
+                {toLocalTime(t.updatedAt)}
               </td>
 
               <td className="px-4 py-3 text-center">
