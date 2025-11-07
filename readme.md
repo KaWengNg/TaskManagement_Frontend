@@ -17,4 +17,11 @@ npm i lucide-react date-fns
 
 ## To run locally:
 
-npm run dev
+1. use Visual Studio Code to open the project
+
+2. set the backend API URL in .env
+   VITE_API_URL=your backend localhost address
+
+3. include required packages by running the npm commands.
+
+4. npm run dev
