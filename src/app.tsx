@@ -28,8 +28,8 @@ export default function App() {
 
       const { data } = await axios.get(API_BASE, { params });
 
-      setTasks(data.tasks || []);
-      setTotalCount(data.total || 0);
+      setTasks(data.items || []);
+      setTotalCount(data.totalCount || 0);
     } catch {
       setError("Failed to fetch tasks.");
     } finally {
