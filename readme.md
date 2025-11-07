@@ -1,4 +1,8 @@
-Packages required:
+## Node.js version
+
+v18.20.8
+
+## Packages required:
 
 npm create vite@5 . -- --template vanilla-ts
 npm i axios @tanstack/react-query
@@ -10,3 +14,7 @@ npm install -D @tailwindcss/postcss
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss@3 init -p
 npm i lucide-react date-fns
+
+## To run locally:
+
+npm run dev
